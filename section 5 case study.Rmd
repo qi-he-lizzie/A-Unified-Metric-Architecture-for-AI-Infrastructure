@@ -1,0 +1,704 @@
+---
+title: "Section 5 Case Study"
+author: "Qi He"
+date: "2026-02-21"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 1. Data Processing
+
+```{r}
+# =========================================================
+# Case 1 Pipeline in R (Upgraded carbon story)
+# Virginia / PJM / DOM
+# =========================================================
+
+# -----------------------------
+# 0. Packages
+# -----------------------------
+required_pkgs <- c(
+  "jsonlite", "readr", "dplyr", "tidyr", "ggplot2", "scales", "stringr"
+)
+
+installed <- rownames(installed.packages())
+for (p in required_pkgs) {
+  if (!(p %in% installed)) install.packages(p)
+}
+
+library(jsonlite)
+library(readr)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(scales)
+library(stringr)
+
+# -----------------------------
+# 1. Set working directory
+# -----------------------------
+setwd("D:/Google Drive/R/case1_pipeline_package/case1_pipeline")
+
+getwd()
+list.files()
+
+# -----------------------------
+# 2. Read parameters and hourly data
+# -----------------------------
+params <- fromJSON("case1_parameters.json", simplifyVector = FALSE)
+
+hourly <- read_csv("sample_case1_hourly_2025.csv", show_col_types = FALSE) %>%
+  mutate(timestamp = as.POSIXct(timestamp, format = "%Y-%m-%d %H:%M:%S", tz = "UTC"))
+
+# -----------------------------
+# 3. Basic checks
+# -----------------------------
+required_cols <- c(
+  "timestamp",
+  "lmp_usd_per_mwh",
+  "stress_indicator",
+  "emissions_tco2_per_mwh",
+  "it_load_mw",
+  "pue",
+  "eta_compute_per_mwh_it",
+  "carbon_shadow_price_usd_per_tco2",
+  "reliability_valuation_usd_per_compute_unit",
+  "location_based_emissions_baseline_tco2_per_mwh"
+)
+
+missing_cols <- setdiff(required_cols, names(hourly))
+if (length(missing_cols) > 0) {
+  stop(paste("Missing required columns:", paste(missing_cols, collapse = ", ")))
+}
+
+# -----------------------------
+# 4. Extract planning parameters
+# -----------------------------
+pp <- params$planning_parameters
+
+it_load_mw <- as.numeric(pp$it_load_mw)
+pue <- as.numeric(pp$pue)
+eta <- as.numeric(pp$eta_compute_per_mwh_it)
+lambda <- as.numeric(pp$carbon_shadow_price_usd_per_tco2)
+nu <- as.numeric(pp$reliability_valuation_usd_per_compute_unit)
+g_lb <- as.numeric(pp$location_based_emissions_baseline_tco2_per_mwh)
+```
+## 2. Comparative Experiment (structured scenario experiment)
+
+```{r}
+# -----------------------------
+# 5. Define upgraded option assumptions
+# -----------------------------
+# We keep the same two stylized designs, but now explicitly allow
+# option-specific carbon exposure through carbon_exposure_multiplier.
+#
+# Interpretation:
+# - Connect-and-Manage: full exposure to hourly marginal emissions
+# - Associated supply / reduced exposure: lower effective carbon exposure
+#
+# can tune these values later if needed.
+
+option_assumptions <- tibble::tibble(
+  option = c("Connect-and-Manage", "Associated_supply_reduced_exposure"),
+  option_label = c("Connect-and-Manage", "Associated supply / reduced exposure"),
+  price_multiplier = c(1.00, 1.08),
+  carbon_exposure_multiplier = c(1.00, 0.70),
+  stress_severity_kappa = c(0.15, 0.03)
+)
+
+print(option_assumptions)
+
+# -----------------------------
+# 6. Computation function
+# -----------------------------
+compute_option_components <- function(df, option_name, option_label,
+                                      price_multiplier,
+                                      carbon_exposure_multiplier,
+                                      stress_severity_kappa,
+                                      it_load_mw, pue, eta, lambda, nu) {
+
+  df_out <- df %>%
+    mutate(
+      option = option_name,
+      option_label = option_label,
+      price_multiplier = price_multiplier,
+      carbon_exposure_multiplier = carbon_exposure_multiplier,
+      stress_severity_kappa = stress_severity_kappa,
+
+      # Core physical/service mapping
+      facility_electricity_mwh = it_load_mw * pue,
+      potential_compute = it_load_mw * eta,
+      availability_alpha = 1 - stress_severity_kappa * stress_indicator,
+      delivered_compute = availability_alpha * potential_compute,
+
+      # Effective decision-facing emissions intensity
+      effective_emissions_tco2_per_mwh = carbon_exposure_multiplier * emissions_tco2_per_mwh,
+
+      # Component computations
+      electricity_component_usd =
+        lmp_usd_per_mwh * price_multiplier * facility_electricity_mwh,
+
+      carbon_component_usd =
+        lambda * effective_emissions_tco2_per_mwh * facility_electricity_mwh,
+
+      reliability_component_usd =
+        nu * (1 - availability_alpha) * potential_compute,
+
+      crcc_hourly_numerator_usd =
+        electricity_component_usd +
+        carbon_component_usd +
+        reliability_component_usd
+    )
+
+  return(df_out)
+}
+
+# -----------------------------
+# 7. Compute hourly outputs for all options
+# -----------------------------
+hourly_components_list <- lapply(seq_len(nrow(option_assumptions)), function(i) {
+  compute_option_components(
+    df = hourly,
+    option_name = option_assumptions$option[i],
+    option_label = option_assumptions$option_label[i],
+    price_multiplier = option_assumptions$price_multiplier[i],
+    carbon_exposure_multiplier = option_assumptions$carbon_exposure_multiplier[i],
+    stress_severity_kappa = option_assumptions$stress_severity_kappa[i],
+    it_load_mw = it_load_mw,
+    pue = pue,
+    eta = eta,
+    lambda = lambda,
+    nu = nu
+  )
+})
+
+hourly_components <- bind_rows(hourly_components_list)
+
+# -----------------------------
+# 8. Create summary table
+# -----------------------------
+option_summary <- hourly_components %>%
+  group_by(option, option_label) %>%
+  summarise(
+    electricity_component_usd_per_delivered_compute =
+      sum(electricity_component_usd) / sum(delivered_compute),
+
+    carbon_component_usd_per_delivered_compute =
+      sum(carbon_component_usd) / sum(delivered_compute),
+
+    reliability_component_usd_per_delivered_compute =
+      sum(reliability_component_usd) / sum(delivered_compute),
+
+    crcc_total_usd_per_delivered_compute =
+      sum(crcc_hourly_numerator_usd) / sum(delivered_compute),
+
+    expected_delivered_compute_total = sum(delivered_compute),
+    total_potential_compute = sum(potential_compute),
+    stress_hours = sum(stress_indicator),
+    avg_price_usd_per_mwh = mean(lmp_usd_per_mwh),
+    avg_base_emissions_tco2_per_mwh = mean(emissions_tco2_per_mwh),
+    avg_effective_emissions_tco2_per_mwh = mean(effective_emissions_tco2_per_mwh),
+    .groups = "drop"
+  ) %>%
+  mutate(across(where(is.numeric), ~ round(.x, 4)))
+
+print(option_summary)
+
+# -----------------------------
+# 9. Export output data
+# -----------------------------
+write_csv(hourly_components, "case1_option_hourly_components_upgraded.csv")
+write_csv(option_summary, "case1_option_summary_upgraded.csv")
+
+```
+### 2.1. Figure 5.1
+
+```{r}
+# 10. Prepare plotting dataset for Figure 5.1
+# -----------------------------
+plot_data <- option_summary %>%
+  select(
+    option_label,
+    electricity_component_usd_per_delivered_compute,
+    carbon_component_usd_per_delivered_compute,
+    reliability_component_usd_per_delivered_compute,
+    crcc_total_usd_per_delivered_compute
+  ) %>%
+  pivot_longer(
+    cols = c(
+      electricity_component_usd_per_delivered_compute,
+      carbon_component_usd_per_delivered_compute,
+      reliability_component_usd_per_delivered_compute
+    ),
+    names_to = "component",
+    values_to = "value"
+  ) %>%
+  mutate(
+    component = recode(
+      component,
+      "electricity_component_usd_per_delivered_compute" = "Electricity",
+      "carbon_component_usd_per_delivered_compute" = "Carbon",
+      "reliability_component_usd_per_delivered_compute" = "Reliability"
+    )
+  )
+
+plot_data$component <- factor(
+  plot_data$component,
+  levels = c("Electricity", "Carbon", "Reliability")
+)
+
+plot_data$option_label <- factor(
+  plot_data$option_label,
+  levels = c("Connect-and-Manage", "Associated supply / reduced exposure")
+)
+
+plot_totals <- option_summary %>%
+  mutate(
+    option_label = factor(
+      option_label,
+      levels = c("Connect-and-Manage", "Associated supply / reduced exposure")
+    )
+  )
+
+# -----------------------------
+# 11. Draw Figure 5.1 with total labels
+# -----------------------------
+fig_5_1 <- ggplot(plot_data, aes(x = option_label, y = value, fill = component)) +
+  geom_col(width = 0.65) +
+  geom_text(
+    data = plot_totals,
+    aes(
+      x = option_label,
+      y = crcc_total_usd_per_delivered_compute,
+      label = round(crcc_total_usd_per_delivered_compute, 1)
+    ),
+    inherit.aes = FALSE,
+    vjust = -0.45,
+    size = 4.2
+  ) +
+  scale_y_continuous(
+    labels = number_format(accuracy = 0.1),
+    expand = expansion(mult = c(0, 0.10))
+  ) +
+  labs(
+    title = "Figure 5.1. Decomposition of CRCC by access/procurement design",
+    subtitle = "Virginia / PJM / DOM case, normalized by delivered compute",
+    x = NULL,
+    y = "USD per delivered compute",
+    fill = NULL
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    plot.title = element_text(face = "bold"),
+    plot.subtitle = element_text(size = 11),
+    axis.text.x = element_text(size = 11),
+    legend.position = "top",
+    panel.grid.minor = element_blank()
+  )
+
+print(fig_5_1)
+
+# -----------------------------
+# 12. Save figure
+# -----------------------------
+ggsave(
+  filename = "Figure_5_1_CRCC_stacked_bar_upgraded.png",
+  plot = fig_5_1,
+  width = 8.5,
+  height = 5.5,
+  dpi = 300
+)
+
+ggsave(
+  filename = "Figure_5_1_CRCC_stacked_bar_upgraded.pdf",
+  plot = fig_5_1,
+  width = 8.5,
+  height = 5.5
+)
+```
+
+### 2.2. Additional Steps
+```{r}
+# 13. Optional diagnostics
+# -----------------------------
+# Check total stress hours
+hourly %>%
+  summarise(total_stress_hours = sum(stress_indicator))
+
+# Check yearly benchmark averages
+hourly %>%
+  summarise(
+    avg_price = mean(lmp_usd_per_mwh),
+    avg_emissions = mean(emissions_tco2_per_mwh),
+    lb_emissions_baseline = mean(location_based_emissions_baseline_tco2_per_mwh)
+  )
+```
+
+
+## 3. Baseline Screening Metric (BSM) vs CRCC
+```{r}
+# =========================================================
+# Figure 5.2 in R
+# Baseline Screening Metric (BSM) vs CRCC
+# Virginia / PJM / DOM Case
+# =========================================================
+
+# -----------------------------
+# 0. Packages
+# -----------------------------
+required_pkgs <- c(
+  "jsonlite", "readr", "dplyr", "tidyr", "ggplot2", "scales", "stringr"
+)
+
+installed <- rownames(installed.packages())
+for (p in required_pkgs) {
+  if (!(p %in% installed)) install.packages(p)
+}
+
+library(jsonlite)
+library(readr)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(scales)
+library(stringr)
+
+# -----------------------------
+# 1. Set working directory
+# -----------------------------
+setwd("D:/Google Drive/R/case1_pipeline_package/case1_pipeline")
+
+getwd()
+list.files()
+
+# -----------------------------
+# 2. Read parameters and hourly data
+# -----------------------------
+params <- fromJSON("case1_parameters.json", simplifyVector = FALSE)
+
+hourly <- read_csv("sample_case1_hourly_2025.csv", show_col_types = FALSE) %>%
+  mutate(timestamp = as.POSIXct(timestamp, format = "%Y-%m-%d %H:%M:%S", tz = "UTC"))
+
+# -----------------------------
+# 3. Basic checks
+# -----------------------------
+required_cols <- c(
+  "timestamp",
+  "lmp_usd_per_mwh",
+  "stress_indicator",
+  "emissions_tco2_per_mwh",
+  "it_load_mw",
+  "pue",
+  "eta_compute_per_mwh_it",
+  "carbon_shadow_price_usd_per_tco2",
+  "reliability_valuation_usd_per_compute_unit",
+  "location_based_emissions_baseline_tco2_per_mwh"
+)
+
+missing_cols <- setdiff(required_cols, names(hourly))
+if (length(missing_cols) > 0) {
+  stop(paste("Missing required columns:", paste(missing_cols, collapse = ", ")))
+}
+
+# -----------------------------
+# 4. Extract planning parameters
+# -----------------------------
+pp <- params$planning_parameters
+
+it_load_mw <- as.numeric(pp$it_load_mw)
+pue <- as.numeric(pp$pue)
+eta <- as.numeric(pp$eta_compute_per_mwh_it)
+lambda <- as.numeric(pp$carbon_shadow_price_usd_per_tco2)
+nu <- as.numeric(pp$reliability_valuation_usd_per_compute_unit)
+g_lb <- as.numeric(pp$location_based_emissions_baseline_tco2_per_mwh)
+
+# -----------------------------
+# 5. Define option assumptions
+# Same logic as upgraded Figure 5.1
+# -----------------------------
+option_assumptions <- tibble::tibble(
+  option = c("Connect-and-Manage", "Associated_supply_reduced_exposure"),
+  option_label = c("Connect-and-Manage", "Associated supply / reduced exposure"),
+  price_multiplier = c(1.00, 1.08),
+  carbon_exposure_multiplier = c(1.00, 0.70),
+  stress_severity_kappa = c(0.15, 0.03)
+)
+
+print(option_assumptions)
+
+# -----------------------------
+# 6. Common quantities
+# -----------------------------
+T_hours <- nrow(hourly)
+avg_price <- mean(hourly$lmp_usd_per_mwh, na.rm = TRUE)
+
+facility_electricity_mwh_per_hour <- it_load_mw * pue
+potential_compute_per_hour <- it_load_mw * eta
+
+sum_E <- T_hours * facility_electricity_mwh_per_hour
+sum_Q_pot <- T_hours * potential_compute_per_hour
+
+# -----------------------------
+# 7. Function to compute CRCC
+# -----------------------------
+compute_crcc <- function(df,
+                         option_name,
+                         option_label,
+                         price_multiplier,
+                         carbon_exposure_multiplier,
+                         stress_severity_kappa,
+                         it_load_mw, pue, eta, lambda, nu) {
+
+  tmp <- df %>%
+    mutate(
+      option = option_name,
+      option_label = option_label,
+      price_multiplier = price_multiplier,
+      carbon_exposure_multiplier = carbon_exposure_multiplier,
+      stress_severity_kappa = stress_severity_kappa,
+
+      facility_electricity_mwh = it_load_mw * pue,
+      potential_compute = it_load_mw * eta,
+      availability_alpha = 1 - stress_severity_kappa * stress_indicator,
+      delivered_compute = availability_alpha * potential_compute,
+
+      effective_emissions_tco2_per_mwh = carbon_exposure_multiplier * emissions_tco2_per_mwh,
+
+      electricity_component_usd =
+        lmp_usd_per_mwh * price_multiplier * facility_electricity_mwh,
+
+      carbon_component_usd =
+        lambda * effective_emissions_tco2_per_mwh * facility_electricity_mwh,
+
+      reliability_component_usd =
+        nu * (1 - availability_alpha) * potential_compute,
+
+      crcc_hourly_numerator_usd =
+        electricity_component_usd +
+        carbon_component_usd +
+        reliability_component_usd
+    )
+
+  out <- tmp %>%
+    summarise(
+      option = first(option),
+      option_label = first(option_label),
+      CRCC =
+        sum(crcc_hourly_numerator_usd) / sum(delivered_compute),
+      electricity_component_crcc =
+        sum(electricity_component_usd) / sum(delivered_compute),
+      carbon_component_crcc =
+        sum(carbon_component_usd) / sum(delivered_compute),
+      reliability_component_crcc =
+        sum(reliability_component_usd) / sum(delivered_compute),
+      delivered_compute_total = sum(delivered_compute),
+      potential_compute_total = sum(potential_compute),
+      stress_hours = sum(stress_indicator),
+      avg_effective_emissions_tco2_per_mwh = mean(effective_emissions_tco2_per_mwh)
+    )
+
+  return(out)
+}
+
+# -----------------------------
+# 8. Compute CRCC results for all options
+# -----------------------------
+crcc_results <- bind_rows(lapply(seq_len(nrow(option_assumptions)), function(i) {
+  compute_crcc(
+    df = hourly,
+    option_name = option_assumptions$option[i],
+    option_label = option_assumptions$option_label[i],
+    price_multiplier = option_assumptions$price_multiplier[i],
+    carbon_exposure_multiplier = option_assumptions$carbon_exposure_multiplier[i],
+    stress_severity_kappa = option_assumptions$stress_severity_kappa[i],
+    it_load_mw = it_load_mw,
+    pue = pue,
+    eta = eta,
+    lambda = lambda,
+    nu = nu
+  )
+})) %>%
+  mutate(across(where(is.numeric), ~ round(.x, 4)))
+
+print(crcc_results)
+
+# -----------------------------
+# 9. Compute BSM (Baseline Screening Metric)
+# Formula:
+# BSM(a,w) = [avg_price * m_(a,w) * sum E + lambda * g_LB * sum E] / sum Q_pot
+#
+# It intentionally ignores:
+# - hourly price variation in the evaluator
+# - option-specific decision-facing carbon exposure
+# - stress-hour correction in the denominator
+# - explicit reliability penalty
+# -----------------------------
+bsm_results <- option_assumptions %>%
+  transmute(
+    option,
+    option_label,
+    BSM =
+      (
+        avg_price * price_multiplier * sum_E +
+          lambda * g_lb * sum_E
+      ) / sum_Q_pot,
+    avg_price_usd_per_mwh = avg_price,
+    location_based_emissions_tco2_per_mwh = g_lb
+  ) %>%
+  mutate(across(where(is.numeric), ~ round(.x, 4)))
+
+print(bsm_results)
+
+# -----------------------------
+# 10. Merge evaluator results
+# -----------------------------
+comparison_table <- crcc_results %>%
+  select(option, option_label, CRCC,
+         electricity_component_crcc,
+         carbon_component_crcc,
+         reliability_component_crcc,
+         delivered_compute_total,
+         potential_compute_total,
+         stress_hours) %>%
+  left_join(bsm_results, by = c("option", "option_label")) %>%
+  mutate(
+    BSM_minus_CRCC = round(BSM - CRCC, 4)
+  )
+
+print(comparison_table)
+
+# -----------------------------
+# 11. Design-gap calculations
+# Reduced exposure minus Connect-and-Manage
+# -----------------------------
+cm_bsm <- comparison_table %>%
+  filter(option == "Connect-and-Manage") %>%
+  pull(BSM)
+
+re_bsm <- comparison_table %>%
+  filter(option == "Associated_supply_reduced_exposure") %>%
+  pull(BSM)
+
+cm_crcc <- comparison_table %>%
+  filter(option == "Connect-and-Manage") %>%
+  pull(CRCC)
+
+re_crcc <- comparison_table %>%
+  filter(option == "Associated_supply_reduced_exposure") %>%
+  pull(CRCC)
+
+design_gap <- tibble(
+  delta_BSM = round(re_bsm - cm_bsm, 4),
+  delta_CRCC = round(re_crcc - cm_crcc, 4),
+  ranking_under_BSM = ifelse(re_bsm < cm_bsm,
+                             "Reduced exposure preferred",
+                             "Connect-and-Manage preferred"),
+  ranking_under_CRCC = ifelse(re_crcc < cm_crcc,
+                              "Reduced exposure preferred",
+                              "Connect-and-Manage preferred")
+)
+
+print(design_gap)
+
+# -----------------------------
+# 12. Export result tables
+# -----------------------------
+write_csv(crcc_results, "figure5_2_crcc_results.csv")
+write_csv(bsm_results, "figure5_2_bsm_results.csv")
+write_csv(comparison_table, "figure5_2_comparison_table.csv")
+write_csv(design_gap, "figure5_2_design_gap.csv")
+
+# -----------------------------
+# 13. Build plotting dataset
+# -----------------------------
+plot_data <- comparison_table %>%
+  select(option_label, BSM, CRCC) %>%
+  pivot_longer(
+    cols = c(BSM, CRCC),
+    names_to = "metric",
+    values_to = "value"
+  ) %>%
+  mutate(
+    metric = recode(
+      metric,
+      "BSM" = "Baseline screening metric",
+      "CRCC" = "CRCC"
+    ),
+    option_label = factor(
+      option_label,
+      levels = c("Connect-and-Manage", "Associated supply / reduced exposure")
+    ),
+    metric = factor(
+      metric,
+      levels = c("Baseline screening metric", "CRCC")
+    )
+  )
+
+# -----------------------------
+# 14. Draw Figure 5.2
+# Grouped bar chart with value labels
+# -----------------------------
+fig_5_2 <- ggplot(plot_data,
+                  aes(x = metric, y = value, fill = option_label)) +
+  geom_col(position = position_dodge(width = 0.75), width = 0.65) +
+  geom_text(
+    aes(label = round(value, 1)),
+    position = position_dodge(width = 0.75),
+    vjust = -0.45,
+    size = 4
+  ) +
+  scale_y_continuous(
+    labels = number_format(accuracy = 0.1),
+    expand = expansion(mult = c(0, 0.10))
+  ) +
+  labs(
+    title = "Figure 5.2. Baseline screening metric versus CRCC",
+    subtitle = "Decision contrast for the two stylized designs in the Virginia / PJM / DOM case",
+    x = NULL,
+    y = "USD per compute (lower is better)",
+    fill = NULL
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    plot.title = element_text(face = "bold"),
+    plot.subtitle = element_text(size = 11),
+    legend.position = "top",
+    panel.grid.minor = element_blank()
+  )
+
+print(fig_5_2)
+
+# -----------------------------
+# 15. Save Figure 5.2
+# -----------------------------
+ggsave(
+  filename = "Figure_5_2_BSM_vs_CRCC.png",
+  plot = fig_5_2,
+  width = 8.5,
+  height = 5.5,
+  dpi = 300
+)
+
+ggsave(
+  filename = "Figure_5_2_BSM_vs_CRCC.pdf",
+  plot = fig_5_2,
+  width = 8.5,
+  height = 5.5
+)
+
+# -----------------------------
+# 16. Optional console summary
+# -----------------------------
+cat("\n==============================\n")
+cat("Average price used in BSM:", round(avg_price, 4), "\n")
+cat("Location-based emissions factor used in BSM:", round(g_lb, 4), "\n")
+cat("==============================\n\n")
+
+print(comparison_table)
+print(design_gap)
+```

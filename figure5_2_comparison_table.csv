@@ -1,0 +1,3 @@
+option,option_label,CRCC,electricity_component_crcc,carbon_component_crcc,reliability_component_crcc,delivered_compute_total,potential_compute_total,stress_hours,BSM,avg_price_usd_per_mwh,location_based_emissions_tco2_per_mwh,BSM_minus_CRCC
+Connect-and-Manage,Connect-and-Manage,97.0643,60.8992,25.0225,11.1425,875025,876000,65,86.5307,50.6929,0.2677,-10.5336
+Associated_supply_reduced_exposure,Associated supply / reduced exposure,85.4393,65.7126,17.5001,2.2265,875805,876000,65,91.3972,50.6929,0.2677,5.9579

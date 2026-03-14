@@ -1,0 +1,3 @@
+option,option_label,electricity_component_usd_per_delivered_compute,carbon_component_usd_per_delivered_compute,reliability_component_usd_per_delivered_compute,crcc_total_usd_per_delivered_compute,expected_delivered_compute_total,total_potential_compute,stress_hours,avg_price_usd_per_mwh,avg_base_emissions_tco2_per_mwh,avg_effective_emissions_tco2_per_mwh
+Associated_supply_reduced_exposure,Associated supply / reduced exposure,65.7126,17.5001,2.2265,85.4393,875805,876000,65,50.6929,0.2604,0.1823
+Connect-and-Manage,Connect-and-Manage,60.8992,25.0225,11.1425,97.0643,875025,876000,65,50.6929,0.2604,0.2604

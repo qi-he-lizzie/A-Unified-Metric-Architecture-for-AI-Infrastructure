@@ -1,0 +1,1156 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Section 5 Case Study},
+  pdfauthor={Qi He},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Section 5 Case Study}
+\author{Qi He}
+\date{2026-02-21}
+
+\begin{document}
+\maketitle
+
+\subsection{1. Data Processing}\label{data-processing}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# =========================================================}
+\CommentTok{\# Case 1 Pipeline in R (Upgraded carbon story)}
+\CommentTok{\# Virginia / PJM / DOM}
+\CommentTok{\# =========================================================}
+
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\CommentTok{\# 0. Packages}
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\NormalTok{required\_pkgs }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}
+  \StringTok{"jsonlite"}\NormalTok{, }\StringTok{"readr"}\NormalTok{, }\StringTok{"dplyr"}\NormalTok{, }\StringTok{"tidyr"}\NormalTok{, }\StringTok{"ggplot2"}\NormalTok{, }\StringTok{"scales"}\NormalTok{, }\StringTok{"stringr"}
+\NormalTok{)}
+
+\NormalTok{installed }\OtherTok{\textless{}{-}} \FunctionTok{rownames}\NormalTok{(}\FunctionTok{installed.packages}\NormalTok{())}
+\ControlFlowTok{for}\NormalTok{ (p }\ControlFlowTok{in}\NormalTok{ required\_pkgs) \{}
+  \ControlFlowTok{if}\NormalTok{ (}\SpecialCharTok{!}\NormalTok{(p }\SpecialCharTok{\%in\%}\NormalTok{ installed)) }\FunctionTok{install.packages}\NormalTok{(p)}
+\NormalTok{\}}
+
+\FunctionTok{library}\NormalTok{(jsonlite)}
+\FunctionTok{library}\NormalTok{(readr)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'readr' was built under R version 4.5.2
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(dplyr)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Attaching package: 'dplyr'
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:stats':
+## 
+##     filter, lag
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(tidyr)}
+\FunctionTok{library}\NormalTok{(ggplot2)}
+\FunctionTok{library}\NormalTok{(scales)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Attaching package: 'scales'
+\end{verbatim}
+
+\begin{verbatim}
+## The following object is masked from 'package:readr':
+## 
+##     col_factor
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(stringr)}
+
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\CommentTok{\# 1. Set working directory}
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\FunctionTok{setwd}\NormalTok{(}\StringTok{"D:/Google Drive/R/case1\_pipeline\_package/case1\_pipeline"}\NormalTok{)}
+
+\FunctionTok{getwd}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "D:/Google Drive/R/case1_pipeline_package/case1_pipeline"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{list.files}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] "build_case1_hourly_dataset.py"              
+##  [2] "case1_hourly_dataset_built_from_R.csv"      
+##  [3] "case1_option_hourly_components_from_R.csv"  
+##  [4] "case1_option_hourly_components_upgraded.csv"
+##  [5] "case1_option_summary_from_R.csv"            
+##  [6] "case1_option_summary_upgraded.csv"          
+##  [7] "case1_parameters.json"                      
+##  [8] "compute_case1_crcc.py"                      
+##  [9] "desktop.ini"                                
+## [10] "Figure_5_1_CRCC_stacked_bar.pdf"            
+## [11] "Figure_5_1_CRCC_stacked_bar.png"            
+## [12] "Figure_5_1_CRCC_stacked_bar_labeled.png"    
+## [13] "Figure_5_1_CRCC_stacked_bar_upgraded.pdf"   
+## [14] "Figure_5_1_CRCC_stacked_bar_upgraded.png"   
+## [15] "Figure_5_2_BSM_vs_CRCC.pdf"                 
+## [16] "Figure_5_2_BSM_vs_CRCC.png"                 
+## [17] "figure5_2_bsm_results.csv"                  
+## [18] "figure5_2_comparison_table.csv"             
+## [19] "figure5_2_crcc_results.csv"                 
+## [20] "figure5_2_design_gap.csv"                   
+## [21] "raw_template_hourly_emissions.csv"          
+## [22] "raw_template_pjm_lmp_dom.csv"               
+## [23] "raw_template_pjm_stress_hours.csv"          
+## [24] "README_case1_pipeline.md"                   
+## [25] "sample_case1_hourly_2025.csv"               
+## [26] "sample_case1_option_hourly_components.csv"  
+## [27] "sample_case1_option_summary.csv"            
+## [28] "section-5-case-study.html"                  
+## [29] "section-5-case-study.Rmd"                   
+## [30] "section 5 case study.Rmd"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\CommentTok{\# 2. Read parameters and hourly data}
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\NormalTok{params }\OtherTok{\textless{}{-}} \FunctionTok{fromJSON}\NormalTok{(}\StringTok{"case1\_parameters.json"}\NormalTok{, }\AttributeTok{simplifyVector =} \ConstantTok{FALSE}\NormalTok{)}
+
+\NormalTok{hourly }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(}\StringTok{"sample\_case1\_hourly\_2025.csv"}\NormalTok{, }\AttributeTok{show\_col\_types =} \ConstantTok{FALSE}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{timestamp =} \FunctionTok{as.POSIXct}\NormalTok{(timestamp, }\AttributeTok{format =} \StringTok{"\%Y{-}\%m{-}\%d \%H:\%M:\%S"}\NormalTok{, }\AttributeTok{tz =} \StringTok{"UTC"}\NormalTok{))}
+
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\CommentTok{\# 3. Basic checks}
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\NormalTok{required\_cols }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}
+  \StringTok{"timestamp"}\NormalTok{,}
+  \StringTok{"lmp\_usd\_per\_mwh"}\NormalTok{,}
+  \StringTok{"stress\_indicator"}\NormalTok{,}
+  \StringTok{"emissions\_tco2\_per\_mwh"}\NormalTok{,}
+  \StringTok{"it\_load\_mw"}\NormalTok{,}
+  \StringTok{"pue"}\NormalTok{,}
+  \StringTok{"eta\_compute\_per\_mwh\_it"}\NormalTok{,}
+  \StringTok{"carbon\_shadow\_price\_usd\_per\_tco2"}\NormalTok{,}
+  \StringTok{"reliability\_valuation\_usd\_per\_compute\_unit"}\NormalTok{,}
+  \StringTok{"location\_based\_emissions\_baseline\_tco2\_per\_mwh"}
+\NormalTok{)}
+
+\NormalTok{missing\_cols }\OtherTok{\textless{}{-}} \FunctionTok{setdiff}\NormalTok{(required\_cols, }\FunctionTok{names}\NormalTok{(hourly))}
+\ControlFlowTok{if}\NormalTok{ (}\FunctionTok{length}\NormalTok{(missing\_cols) }\SpecialCharTok{\textgreater{}} \DecValTok{0}\NormalTok{) \{}
+  \FunctionTok{stop}\NormalTok{(}\FunctionTok{paste}\NormalTok{(}\StringTok{"Missing required columns:"}\NormalTok{, }\FunctionTok{paste}\NormalTok{(missing\_cols, }\AttributeTok{collapse =} \StringTok{", "}\NormalTok{)))}
+\NormalTok{\}}
+
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\CommentTok{\# 4. Extract planning parameters}
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\NormalTok{pp }\OtherTok{\textless{}{-}}\NormalTok{ params}\SpecialCharTok{$}\NormalTok{planning\_parameters}
+
+\NormalTok{it\_load\_mw }\OtherTok{\textless{}{-}} \FunctionTok{as.numeric}\NormalTok{(pp}\SpecialCharTok{$}\NormalTok{it\_load\_mw)}
+\NormalTok{pue }\OtherTok{\textless{}{-}} \FunctionTok{as.numeric}\NormalTok{(pp}\SpecialCharTok{$}\NormalTok{pue)}
+\NormalTok{eta }\OtherTok{\textless{}{-}} \FunctionTok{as.numeric}\NormalTok{(pp}\SpecialCharTok{$}\NormalTok{eta\_compute\_per\_mwh\_it)}
+\NormalTok{lambda }\OtherTok{\textless{}{-}} \FunctionTok{as.numeric}\NormalTok{(pp}\SpecialCharTok{$}\NormalTok{carbon\_shadow\_price\_usd\_per\_tco2)}
+\NormalTok{nu }\OtherTok{\textless{}{-}} \FunctionTok{as.numeric}\NormalTok{(pp}\SpecialCharTok{$}\NormalTok{reliability\_valuation\_usd\_per\_compute\_unit)}
+\NormalTok{g\_lb }\OtherTok{\textless{}{-}} \FunctionTok{as.numeric}\NormalTok{(pp}\SpecialCharTok{$}\NormalTok{location\_based\_emissions\_baseline\_tco2\_per\_mwh)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{2. Comparative Experiment (structured scenario
+experiment)}\label{comparative-experiment-structured-scenario-experiment}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\CommentTok{\# 5. Define upgraded option assumptions}
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\CommentTok{\# We keep the same two stylized designs, but now explicitly allow}
+\CommentTok{\# option{-}specific carbon exposure through carbon\_exposure\_multiplier.}
+\CommentTok{\#}
+\CommentTok{\# Interpretation:}
+\CommentTok{\# {-} Connect{-}and{-}Manage: full exposure to hourly marginal emissions}
+\CommentTok{\# {-} Associated supply / reduced exposure: lower effective carbon exposure}
+\CommentTok{\#}
+\CommentTok{\# can tune these values later if needed.}
+
+\NormalTok{option\_assumptions }\OtherTok{\textless{}{-}}\NormalTok{ tibble}\SpecialCharTok{::}\FunctionTok{tibble}\NormalTok{(}
+  \AttributeTok{option =} \FunctionTok{c}\NormalTok{(}\StringTok{"Connect{-}and{-}Manage"}\NormalTok{, }\StringTok{"Associated\_supply\_reduced\_exposure"}\NormalTok{),}
+  \AttributeTok{option\_label =} \FunctionTok{c}\NormalTok{(}\StringTok{"Connect{-}and{-}Manage"}\NormalTok{, }\StringTok{"Associated supply / reduced exposure"}\NormalTok{),}
+  \AttributeTok{price\_multiplier =} \FunctionTok{c}\NormalTok{(}\FloatTok{1.00}\NormalTok{, }\FloatTok{1.08}\NormalTok{),}
+  \AttributeTok{carbon\_exposure\_multiplier =} \FunctionTok{c}\NormalTok{(}\FloatTok{1.00}\NormalTok{, }\FloatTok{0.70}\NormalTok{),}
+  \AttributeTok{stress\_severity\_kappa =} \FunctionTok{c}\NormalTok{(}\FloatTok{0.15}\NormalTok{, }\FloatTok{0.03}\NormalTok{)}
+\NormalTok{)}
+
+\FunctionTok{print}\NormalTok{(option\_assumptions)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 2 x 5
+##   option                    option_label price_multiplier carbon_exposure_mult~1
+##   <chr>                     <chr>                   <dbl>                  <dbl>
+## 1 Connect-and-Manage        Connect-and~             1                       1  
+## 2 Associated_supply_reduce~ Associated ~             1.08                    0.7
+## # i abbreviated name: 1: carbon_exposure_multiplier
+## # i 1 more variable: stress_severity_kappa <dbl>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\CommentTok{\# 6. Computation function}
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\NormalTok{compute\_option\_components }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(df, option\_name, option\_label,}
+\NormalTok{                                      price\_multiplier,}
+\NormalTok{                                      carbon\_exposure\_multiplier,}
+\NormalTok{                                      stress\_severity\_kappa,}
+\NormalTok{                                      it\_load\_mw, pue, eta, lambda, nu) \{}
+
+\NormalTok{  df\_out }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{mutate}\NormalTok{(}
+      \AttributeTok{option =}\NormalTok{ option\_name,}
+      \AttributeTok{option\_label =}\NormalTok{ option\_label,}
+      \AttributeTok{price\_multiplier =}\NormalTok{ price\_multiplier,}
+      \AttributeTok{carbon\_exposure\_multiplier =}\NormalTok{ carbon\_exposure\_multiplier,}
+      \AttributeTok{stress\_severity\_kappa =}\NormalTok{ stress\_severity\_kappa,}
+
+      \CommentTok{\# Core physical/service mapping}
+      \AttributeTok{facility\_electricity\_mwh =}\NormalTok{ it\_load\_mw }\SpecialCharTok{*}\NormalTok{ pue,}
+      \AttributeTok{potential\_compute =}\NormalTok{ it\_load\_mw }\SpecialCharTok{*}\NormalTok{ eta,}
+      \AttributeTok{availability\_alpha =} \DecValTok{1} \SpecialCharTok{{-}}\NormalTok{ stress\_severity\_kappa }\SpecialCharTok{*}\NormalTok{ stress\_indicator,}
+      \AttributeTok{delivered\_compute =}\NormalTok{ availability\_alpha }\SpecialCharTok{*}\NormalTok{ potential\_compute,}
+
+      \CommentTok{\# Effective decision{-}facing emissions intensity}
+      \AttributeTok{effective\_emissions\_tco2\_per\_mwh =}\NormalTok{ carbon\_exposure\_multiplier }\SpecialCharTok{*}\NormalTok{ emissions\_tco2\_per\_mwh,}
+
+      \CommentTok{\# Component computations}
+      \AttributeTok{electricity\_component\_usd =}
+\NormalTok{        lmp\_usd\_per\_mwh }\SpecialCharTok{*}\NormalTok{ price\_multiplier }\SpecialCharTok{*}\NormalTok{ facility\_electricity\_mwh,}
+
+      \AttributeTok{carbon\_component\_usd =}
+\NormalTok{        lambda }\SpecialCharTok{*}\NormalTok{ effective\_emissions\_tco2\_per\_mwh }\SpecialCharTok{*}\NormalTok{ facility\_electricity\_mwh,}
+
+      \AttributeTok{reliability\_component\_usd =}
+\NormalTok{        nu }\SpecialCharTok{*}\NormalTok{ (}\DecValTok{1} \SpecialCharTok{{-}}\NormalTok{ availability\_alpha) }\SpecialCharTok{*}\NormalTok{ potential\_compute,}
+
+      \AttributeTok{crcc\_hourly\_numerator\_usd =}
+\NormalTok{        electricity\_component\_usd }\SpecialCharTok{+}
+\NormalTok{        carbon\_component\_usd }\SpecialCharTok{+}
+\NormalTok{        reliability\_component\_usd}
+\NormalTok{    )}
+
+  \FunctionTok{return}\NormalTok{(df\_out)}
+\NormalTok{\}}
+
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\CommentTok{\# 7. Compute hourly outputs for all options}
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\NormalTok{hourly\_components\_list }\OtherTok{\textless{}{-}} \FunctionTok{lapply}\NormalTok{(}\FunctionTok{seq\_len}\NormalTok{(}\FunctionTok{nrow}\NormalTok{(option\_assumptions)), }\ControlFlowTok{function}\NormalTok{(i) \{}
+  \FunctionTok{compute\_option\_components}\NormalTok{(}
+    \AttributeTok{df =}\NormalTok{ hourly,}
+    \AttributeTok{option\_name =}\NormalTok{ option\_assumptions}\SpecialCharTok{$}\NormalTok{option[i],}
+    \AttributeTok{option\_label =}\NormalTok{ option\_assumptions}\SpecialCharTok{$}\NormalTok{option\_label[i],}
+    \AttributeTok{price\_multiplier =}\NormalTok{ option\_assumptions}\SpecialCharTok{$}\NormalTok{price\_multiplier[i],}
+    \AttributeTok{carbon\_exposure\_multiplier =}\NormalTok{ option\_assumptions}\SpecialCharTok{$}\NormalTok{carbon\_exposure\_multiplier[i],}
+    \AttributeTok{stress\_severity\_kappa =}\NormalTok{ option\_assumptions}\SpecialCharTok{$}\NormalTok{stress\_severity\_kappa[i],}
+    \AttributeTok{it\_load\_mw =}\NormalTok{ it\_load\_mw,}
+    \AttributeTok{pue =}\NormalTok{ pue,}
+    \AttributeTok{eta =}\NormalTok{ eta,}
+    \AttributeTok{lambda =}\NormalTok{ lambda,}
+    \AttributeTok{nu =}\NormalTok{ nu}
+\NormalTok{  )}
+\NormalTok{\})}
+
+\NormalTok{hourly\_components }\OtherTok{\textless{}{-}} \FunctionTok{bind\_rows}\NormalTok{(hourly\_components\_list)}
+
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\CommentTok{\# 8. Create summary table}
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\NormalTok{option\_summary }\OtherTok{\textless{}{-}}\NormalTok{ hourly\_components }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(option, option\_label) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarise}\NormalTok{(}
+    \AttributeTok{electricity\_component\_usd\_per\_delivered\_compute =}
+      \FunctionTok{sum}\NormalTok{(electricity\_component\_usd) }\SpecialCharTok{/} \FunctionTok{sum}\NormalTok{(delivered\_compute),}
+
+    \AttributeTok{carbon\_component\_usd\_per\_delivered\_compute =}
+      \FunctionTok{sum}\NormalTok{(carbon\_component\_usd) }\SpecialCharTok{/} \FunctionTok{sum}\NormalTok{(delivered\_compute),}
+
+    \AttributeTok{reliability\_component\_usd\_per\_delivered\_compute =}
+      \FunctionTok{sum}\NormalTok{(reliability\_component\_usd) }\SpecialCharTok{/} \FunctionTok{sum}\NormalTok{(delivered\_compute),}
+
+    \AttributeTok{crcc\_total\_usd\_per\_delivered\_compute =}
+      \FunctionTok{sum}\NormalTok{(crcc\_hourly\_numerator\_usd) }\SpecialCharTok{/} \FunctionTok{sum}\NormalTok{(delivered\_compute),}
+
+    \AttributeTok{expected\_delivered\_compute\_total =} \FunctionTok{sum}\NormalTok{(delivered\_compute),}
+    \AttributeTok{total\_potential\_compute =} \FunctionTok{sum}\NormalTok{(potential\_compute),}
+    \AttributeTok{stress\_hours =} \FunctionTok{sum}\NormalTok{(stress\_indicator),}
+    \AttributeTok{avg\_price\_usd\_per\_mwh =} \FunctionTok{mean}\NormalTok{(lmp\_usd\_per\_mwh),}
+    \AttributeTok{avg\_base\_emissions\_tco2\_per\_mwh =} \FunctionTok{mean}\NormalTok{(emissions\_tco2\_per\_mwh),}
+    \AttributeTok{avg\_effective\_emissions\_tco2\_per\_mwh =} \FunctionTok{mean}\NormalTok{(effective\_emissions\_tco2\_per\_mwh),}
+    \AttributeTok{.groups =} \StringTok{"drop"}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\FunctionTok{across}\NormalTok{(}\FunctionTok{where}\NormalTok{(is.numeric), }\SpecialCharTok{\textasciitilde{}} \FunctionTok{round}\NormalTok{(.x, }\DecValTok{4}\NormalTok{)))}
+
+\FunctionTok{print}\NormalTok{(option\_summary)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 2 x 12
+##   option              option_label electricity_componen~1 carbon_component_usd~2
+##   <chr>               <chr>                         <dbl>                  <dbl>
+## 1 Associated_supply_~ Associated ~                   65.7                   17.5
+## 2 Connect-and-Manage  Connect-and~                   60.9                   25.0
+## # i abbreviated names: 1: electricity_component_usd_per_delivered_compute,
+## #   2: carbon_component_usd_per_delivered_compute
+## # i 8 more variables: reliability_component_usd_per_delivered_compute <dbl>,
+## #   crcc_total_usd_per_delivered_compute <dbl>,
+## #   expected_delivered_compute_total <dbl>, total_potential_compute <dbl>,
+## #   stress_hours <dbl>, avg_price_usd_per_mwh <dbl>,
+## #   avg_base_emissions_tco2_per_mwh <dbl>, ...
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\CommentTok{\# 9. Export output data}
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\FunctionTok{write\_csv}\NormalTok{(hourly\_components, }\StringTok{"case1\_option\_hourly\_components\_upgraded.csv"}\NormalTok{)}
+\FunctionTok{write\_csv}\NormalTok{(option\_summary, }\StringTok{"case1\_option\_summary\_upgraded.csv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection{2.1. Figure 5.1}\label{figure-5.1}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 10. Prepare plotting dataset for Figure 5.1}
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\NormalTok{plot\_data }\OtherTok{\textless{}{-}}\NormalTok{ option\_summary }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(}
+\NormalTok{    option\_label,}
+\NormalTok{    electricity\_component\_usd\_per\_delivered\_compute,}
+\NormalTok{    carbon\_component\_usd\_per\_delivered\_compute,}
+\NormalTok{    reliability\_component\_usd\_per\_delivered\_compute,}
+\NormalTok{    crcc\_total\_usd\_per\_delivered\_compute}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{pivot\_longer}\NormalTok{(}
+    \AttributeTok{cols =} \FunctionTok{c}\NormalTok{(}
+\NormalTok{      electricity\_component\_usd\_per\_delivered\_compute,}
+\NormalTok{      carbon\_component\_usd\_per\_delivered\_compute,}
+\NormalTok{      reliability\_component\_usd\_per\_delivered\_compute}
+\NormalTok{    ),}
+    \AttributeTok{names\_to =} \StringTok{"component"}\NormalTok{,}
+    \AttributeTok{values\_to =} \StringTok{"value"}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{component =} \FunctionTok{recode}\NormalTok{(}
+\NormalTok{      component,}
+      \StringTok{"electricity\_component\_usd\_per\_delivered\_compute"} \OtherTok{=} \StringTok{"Electricity"}\NormalTok{,}
+      \StringTok{"carbon\_component\_usd\_per\_delivered\_compute"} \OtherTok{=} \StringTok{"Carbon"}\NormalTok{,}
+      \StringTok{"reliability\_component\_usd\_per\_delivered\_compute"} \OtherTok{=} \StringTok{"Reliability"}
+\NormalTok{    )}
+\NormalTok{  )}
+
+\NormalTok{plot\_data}\SpecialCharTok{$}\NormalTok{component }\OtherTok{\textless{}{-}} \FunctionTok{factor}\NormalTok{(}
+\NormalTok{  plot\_data}\SpecialCharTok{$}\NormalTok{component,}
+  \AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\StringTok{"Electricity"}\NormalTok{, }\StringTok{"Carbon"}\NormalTok{, }\StringTok{"Reliability"}\NormalTok{)}
+\NormalTok{)}
+
+\NormalTok{plot\_data}\SpecialCharTok{$}\NormalTok{option\_label }\OtherTok{\textless{}{-}} \FunctionTok{factor}\NormalTok{(}
+\NormalTok{  plot\_data}\SpecialCharTok{$}\NormalTok{option\_label,}
+  \AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\StringTok{"Connect{-}and{-}Manage"}\NormalTok{, }\StringTok{"Associated supply / reduced exposure"}\NormalTok{)}
+\NormalTok{)}
+
+\NormalTok{plot\_totals }\OtherTok{\textless{}{-}}\NormalTok{ option\_summary }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{option\_label =} \FunctionTok{factor}\NormalTok{(}
+\NormalTok{      option\_label,}
+      \AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\StringTok{"Connect{-}and{-}Manage"}\NormalTok{, }\StringTok{"Associated supply / reduced exposure"}\NormalTok{)}
+\NormalTok{    )}
+\NormalTok{  )}
+
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\CommentTok{\# 11. Draw Figure 5.1 with total labels}
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\NormalTok{fig\_5\_1 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(plot\_data, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ option\_label, }\AttributeTok{y =}\NormalTok{ value, }\AttributeTok{fill =}\NormalTok{ component)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_col}\NormalTok{(}\AttributeTok{width =} \FloatTok{0.65}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_text}\NormalTok{(}
+    \AttributeTok{data =}\NormalTok{ plot\_totals,}
+    \FunctionTok{aes}\NormalTok{(}
+      \AttributeTok{x =}\NormalTok{ option\_label,}
+      \AttributeTok{y =}\NormalTok{ crcc\_total\_usd\_per\_delivered\_compute,}
+      \AttributeTok{label =} \FunctionTok{round}\NormalTok{(crcc\_total\_usd\_per\_delivered\_compute, }\DecValTok{1}\NormalTok{)}
+\NormalTok{    ),}
+    \AttributeTok{inherit.aes =} \ConstantTok{FALSE}\NormalTok{,}
+    \AttributeTok{vjust =} \SpecialCharTok{{-}}\FloatTok{0.45}\NormalTok{,}
+    \AttributeTok{size =} \FloatTok{4.2}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{scale\_y\_continuous}\NormalTok{(}
+    \AttributeTok{labels =} \FunctionTok{number\_format}\NormalTok{(}\AttributeTok{accuracy =} \FloatTok{0.1}\NormalTok{),}
+    \AttributeTok{expand =} \FunctionTok{expansion}\NormalTok{(}\AttributeTok{mult =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\FloatTok{0.10}\NormalTok{))}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"Figure 5.1. Decomposition of CRCC by access/procurement design"}\NormalTok{,}
+    \AttributeTok{subtitle =} \StringTok{"Virginia / PJM / DOM case, normalized by delivered compute"}\NormalTok{,}
+    \AttributeTok{x =} \ConstantTok{NULL}\NormalTok{,}
+    \AttributeTok{y =} \StringTok{"USD per delivered compute"}\NormalTok{,}
+    \AttributeTok{fill =} \ConstantTok{NULL}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{(}\AttributeTok{base\_size =} \DecValTok{13}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}
+    \AttributeTok{plot.title =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{face =} \StringTok{"bold"}\NormalTok{),}
+    \AttributeTok{plot.subtitle =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{11}\NormalTok{),}
+    \AttributeTok{axis.text.x =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{11}\NormalTok{),}
+    \AttributeTok{legend.position =} \StringTok{"top"}\NormalTok{,}
+    \AttributeTok{panel.grid.minor =} \FunctionTok{element\_blank}\NormalTok{()}
+\NormalTok{  )}
+
+\FunctionTok{print}\NormalTok{(fig\_5\_1)}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{section-5-case-study_files/figure-latex/unnamed-chunk-3-1.pdf}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\CommentTok{\# 12. Save figure}
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\FunctionTok{ggsave}\NormalTok{(}
+  \AttributeTok{filename =} \StringTok{"Figure\_5\_1\_CRCC\_stacked\_bar\_upgraded.png"}\NormalTok{,}
+  \AttributeTok{plot =}\NormalTok{ fig\_5\_1,}
+  \AttributeTok{width =} \FloatTok{8.5}\NormalTok{,}
+  \AttributeTok{height =} \FloatTok{5.5}\NormalTok{,}
+  \AttributeTok{dpi =} \DecValTok{300}
+\NormalTok{)}
+
+\FunctionTok{ggsave}\NormalTok{(}
+  \AttributeTok{filename =} \StringTok{"Figure\_5\_1\_CRCC\_stacked\_bar\_upgraded.pdf"}\NormalTok{,}
+  \AttributeTok{plot =}\NormalTok{ fig\_5\_1,}
+  \AttributeTok{width =} \FloatTok{8.5}\NormalTok{,}
+  \AttributeTok{height =} \FloatTok{5.5}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection{2.2. Additional Steps}\label{additional-steps}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 13. Optional diagnostics}
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\CommentTok{\# Check total stress hours}
+\NormalTok{hourly }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarise}\NormalTok{(}\AttributeTok{total\_stress\_hours =} \FunctionTok{sum}\NormalTok{(stress\_indicator))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 1
+##   total_stress_hours
+##                <dbl>
+## 1                 65
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Check yearly benchmark averages}
+\NormalTok{hourly }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarise}\NormalTok{(}
+    \AttributeTok{avg\_price =} \FunctionTok{mean}\NormalTok{(lmp\_usd\_per\_mwh),}
+    \AttributeTok{avg\_emissions =} \FunctionTok{mean}\NormalTok{(emissions\_tco2\_per\_mwh),}
+    \AttributeTok{lb\_emissions\_baseline =} \FunctionTok{mean}\NormalTok{(location\_based\_emissions\_baseline\_tco2\_per\_mwh)}
+\NormalTok{  )}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 3
+##   avg_price avg_emissions lb_emissions_baseline
+##       <dbl>         <dbl>                 <dbl>
+## 1      50.7         0.260                 0.268
+\end{verbatim}
+
+\subsection{3. Baseline Screening Metric (BSM) vs
+CRCC}\label{baseline-screening-metric-bsm-vs-crcc}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# =========================================================}
+\CommentTok{\# Figure 5.2 in R}
+\CommentTok{\# Baseline Screening Metric (BSM) vs CRCC}
+\CommentTok{\# Virginia / PJM / DOM Case}
+\CommentTok{\# =========================================================}
+
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\CommentTok{\# 0. Packages}
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\NormalTok{required\_pkgs }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}
+  \StringTok{"jsonlite"}\NormalTok{, }\StringTok{"readr"}\NormalTok{, }\StringTok{"dplyr"}\NormalTok{, }\StringTok{"tidyr"}\NormalTok{, }\StringTok{"ggplot2"}\NormalTok{, }\StringTok{"scales"}\NormalTok{, }\StringTok{"stringr"}
+\NormalTok{)}
+
+\NormalTok{installed }\OtherTok{\textless{}{-}} \FunctionTok{rownames}\NormalTok{(}\FunctionTok{installed.packages}\NormalTok{())}
+\ControlFlowTok{for}\NormalTok{ (p }\ControlFlowTok{in}\NormalTok{ required\_pkgs) \{}
+  \ControlFlowTok{if}\NormalTok{ (}\SpecialCharTok{!}\NormalTok{(p }\SpecialCharTok{\%in\%}\NormalTok{ installed)) }\FunctionTok{install.packages}\NormalTok{(p)}
+\NormalTok{\}}
+
+\FunctionTok{library}\NormalTok{(jsonlite)}
+\FunctionTok{library}\NormalTok{(readr)}
+\FunctionTok{library}\NormalTok{(dplyr)}
+\FunctionTok{library}\NormalTok{(tidyr)}
+\FunctionTok{library}\NormalTok{(ggplot2)}
+\FunctionTok{library}\NormalTok{(scales)}
+\FunctionTok{library}\NormalTok{(stringr)}
+
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\CommentTok{\# 1. Set working directory}
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\FunctionTok{setwd}\NormalTok{(}\StringTok{"D:/Google Drive/R/case1\_pipeline\_package/case1\_pipeline"}\NormalTok{)}
+
+\FunctionTok{getwd}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "D:/Google Drive/R/case1_pipeline_package/case1_pipeline"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{list.files}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] "build_case1_hourly_dataset.py"              
+##  [2] "case1_hourly_dataset_built_from_R.csv"      
+##  [3] "case1_option_hourly_components_from_R.csv"  
+##  [4] "case1_option_hourly_components_upgraded.csv"
+##  [5] "case1_option_summary_from_R.csv"            
+##  [6] "case1_option_summary_upgraded.csv"          
+##  [7] "case1_parameters.json"                      
+##  [8] "compute_case1_crcc.py"                      
+##  [9] "desktop.ini"                                
+## [10] "Figure_5_1_CRCC_stacked_bar.pdf"            
+## [11] "Figure_5_1_CRCC_stacked_bar.png"            
+## [12] "Figure_5_1_CRCC_stacked_bar_labeled.png"    
+## [13] "Figure_5_1_CRCC_stacked_bar_upgraded.pdf"   
+## [14] "Figure_5_1_CRCC_stacked_bar_upgraded.png"   
+## [15] "Figure_5_2_BSM_vs_CRCC.pdf"                 
+## [16] "Figure_5_2_BSM_vs_CRCC.png"                 
+## [17] "figure5_2_bsm_results.csv"                  
+## [18] "figure5_2_comparison_table.csv"             
+## [19] "figure5_2_crcc_results.csv"                 
+## [20] "figure5_2_design_gap.csv"                   
+## [21] "raw_template_hourly_emissions.csv"          
+## [22] "raw_template_pjm_lmp_dom.csv"               
+## [23] "raw_template_pjm_stress_hours.csv"          
+## [24] "README_case1_pipeline.md"                   
+## [25] "sample_case1_hourly_2025.csv"               
+## [26] "sample_case1_option_hourly_components.csv"  
+## [27] "sample_case1_option_summary.csv"            
+## [28] "section-5-case-study.html"                  
+## [29] "section-5-case-study.Rmd"                   
+## [30] "section-5-case-study_files"                 
+## [31] "section 5 case study.Rmd"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\CommentTok{\# 2. Read parameters and hourly data}
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\NormalTok{params }\OtherTok{\textless{}{-}} \FunctionTok{fromJSON}\NormalTok{(}\StringTok{"case1\_parameters.json"}\NormalTok{, }\AttributeTok{simplifyVector =} \ConstantTok{FALSE}\NormalTok{)}
+
+\NormalTok{hourly }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(}\StringTok{"sample\_case1\_hourly\_2025.csv"}\NormalTok{, }\AttributeTok{show\_col\_types =} \ConstantTok{FALSE}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{timestamp =} \FunctionTok{as.POSIXct}\NormalTok{(timestamp, }\AttributeTok{format =} \StringTok{"\%Y{-}\%m{-}\%d \%H:\%M:\%S"}\NormalTok{, }\AttributeTok{tz =} \StringTok{"UTC"}\NormalTok{))}
+
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\CommentTok{\# 3. Basic checks}
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\NormalTok{required\_cols }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}
+  \StringTok{"timestamp"}\NormalTok{,}
+  \StringTok{"lmp\_usd\_per\_mwh"}\NormalTok{,}
+  \StringTok{"stress\_indicator"}\NormalTok{,}
+  \StringTok{"emissions\_tco2\_per\_mwh"}\NormalTok{,}
+  \StringTok{"it\_load\_mw"}\NormalTok{,}
+  \StringTok{"pue"}\NormalTok{,}
+  \StringTok{"eta\_compute\_per\_mwh\_it"}\NormalTok{,}
+  \StringTok{"carbon\_shadow\_price\_usd\_per\_tco2"}\NormalTok{,}
+  \StringTok{"reliability\_valuation\_usd\_per\_compute\_unit"}\NormalTok{,}
+  \StringTok{"location\_based\_emissions\_baseline\_tco2\_per\_mwh"}
+\NormalTok{)}
+
+\NormalTok{missing\_cols }\OtherTok{\textless{}{-}} \FunctionTok{setdiff}\NormalTok{(required\_cols, }\FunctionTok{names}\NormalTok{(hourly))}
+\ControlFlowTok{if}\NormalTok{ (}\FunctionTok{length}\NormalTok{(missing\_cols) }\SpecialCharTok{\textgreater{}} \DecValTok{0}\NormalTok{) \{}
+  \FunctionTok{stop}\NormalTok{(}\FunctionTok{paste}\NormalTok{(}\StringTok{"Missing required columns:"}\NormalTok{, }\FunctionTok{paste}\NormalTok{(missing\_cols, }\AttributeTok{collapse =} \StringTok{", "}\NormalTok{)))}
+\NormalTok{\}}
+
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\CommentTok{\# 4. Extract planning parameters}
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\NormalTok{pp }\OtherTok{\textless{}{-}}\NormalTok{ params}\SpecialCharTok{$}\NormalTok{planning\_parameters}
+
+\NormalTok{it\_load\_mw }\OtherTok{\textless{}{-}} \FunctionTok{as.numeric}\NormalTok{(pp}\SpecialCharTok{$}\NormalTok{it\_load\_mw)}
+\NormalTok{pue }\OtherTok{\textless{}{-}} \FunctionTok{as.numeric}\NormalTok{(pp}\SpecialCharTok{$}\NormalTok{pue)}
+\NormalTok{eta }\OtherTok{\textless{}{-}} \FunctionTok{as.numeric}\NormalTok{(pp}\SpecialCharTok{$}\NormalTok{eta\_compute\_per\_mwh\_it)}
+\NormalTok{lambda }\OtherTok{\textless{}{-}} \FunctionTok{as.numeric}\NormalTok{(pp}\SpecialCharTok{$}\NormalTok{carbon\_shadow\_price\_usd\_per\_tco2)}
+\NormalTok{nu }\OtherTok{\textless{}{-}} \FunctionTok{as.numeric}\NormalTok{(pp}\SpecialCharTok{$}\NormalTok{reliability\_valuation\_usd\_per\_compute\_unit)}
+\NormalTok{g\_lb }\OtherTok{\textless{}{-}} \FunctionTok{as.numeric}\NormalTok{(pp}\SpecialCharTok{$}\NormalTok{location\_based\_emissions\_baseline\_tco2\_per\_mwh)}
+
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\CommentTok{\# 5. Define option assumptions}
+\CommentTok{\# Same logic as upgraded Figure 5.1}
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\NormalTok{option\_assumptions }\OtherTok{\textless{}{-}}\NormalTok{ tibble}\SpecialCharTok{::}\FunctionTok{tibble}\NormalTok{(}
+  \AttributeTok{option =} \FunctionTok{c}\NormalTok{(}\StringTok{"Connect{-}and{-}Manage"}\NormalTok{, }\StringTok{"Associated\_supply\_reduced\_exposure"}\NormalTok{),}
+  \AttributeTok{option\_label =} \FunctionTok{c}\NormalTok{(}\StringTok{"Connect{-}and{-}Manage"}\NormalTok{, }\StringTok{"Associated supply / reduced exposure"}\NormalTok{),}
+  \AttributeTok{price\_multiplier =} \FunctionTok{c}\NormalTok{(}\FloatTok{1.00}\NormalTok{, }\FloatTok{1.08}\NormalTok{),}
+  \AttributeTok{carbon\_exposure\_multiplier =} \FunctionTok{c}\NormalTok{(}\FloatTok{1.00}\NormalTok{, }\FloatTok{0.70}\NormalTok{),}
+  \AttributeTok{stress\_severity\_kappa =} \FunctionTok{c}\NormalTok{(}\FloatTok{0.15}\NormalTok{, }\FloatTok{0.03}\NormalTok{)}
+\NormalTok{)}
+
+\FunctionTok{print}\NormalTok{(option\_assumptions)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 2 x 5
+##   option                    option_label price_multiplier carbon_exposure_mult~1
+##   <chr>                     <chr>                   <dbl>                  <dbl>
+## 1 Connect-and-Manage        Connect-and~             1                       1  
+## 2 Associated_supply_reduce~ Associated ~             1.08                    0.7
+## # i abbreviated name: 1: carbon_exposure_multiplier
+## # i 1 more variable: stress_severity_kappa <dbl>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\CommentTok{\# 6. Common quantities}
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\NormalTok{T\_hours }\OtherTok{\textless{}{-}} \FunctionTok{nrow}\NormalTok{(hourly)}
+\NormalTok{avg\_price }\OtherTok{\textless{}{-}} \FunctionTok{mean}\NormalTok{(hourly}\SpecialCharTok{$}\NormalTok{lmp\_usd\_per\_mwh, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)}
+
+\NormalTok{facility\_electricity\_mwh\_per\_hour }\OtherTok{\textless{}{-}}\NormalTok{ it\_load\_mw }\SpecialCharTok{*}\NormalTok{ pue}
+\NormalTok{potential\_compute\_per\_hour }\OtherTok{\textless{}{-}}\NormalTok{ it\_load\_mw }\SpecialCharTok{*}\NormalTok{ eta}
+
+\NormalTok{sum\_E }\OtherTok{\textless{}{-}}\NormalTok{ T\_hours }\SpecialCharTok{*}\NormalTok{ facility\_electricity\_mwh\_per\_hour}
+\NormalTok{sum\_Q\_pot }\OtherTok{\textless{}{-}}\NormalTok{ T\_hours }\SpecialCharTok{*}\NormalTok{ potential\_compute\_per\_hour}
+
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\CommentTok{\# 7. Function to compute CRCC}
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\NormalTok{compute\_crcc }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(df,}
+\NormalTok{                         option\_name,}
+\NormalTok{                         option\_label,}
+\NormalTok{                         price\_multiplier,}
+\NormalTok{                         carbon\_exposure\_multiplier,}
+\NormalTok{                         stress\_severity\_kappa,}
+\NormalTok{                         it\_load\_mw, pue, eta, lambda, nu) \{}
+
+\NormalTok{  tmp }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{mutate}\NormalTok{(}
+      \AttributeTok{option =}\NormalTok{ option\_name,}
+      \AttributeTok{option\_label =}\NormalTok{ option\_label,}
+      \AttributeTok{price\_multiplier =}\NormalTok{ price\_multiplier,}
+      \AttributeTok{carbon\_exposure\_multiplier =}\NormalTok{ carbon\_exposure\_multiplier,}
+      \AttributeTok{stress\_severity\_kappa =}\NormalTok{ stress\_severity\_kappa,}
+
+      \AttributeTok{facility\_electricity\_mwh =}\NormalTok{ it\_load\_mw }\SpecialCharTok{*}\NormalTok{ pue,}
+      \AttributeTok{potential\_compute =}\NormalTok{ it\_load\_mw }\SpecialCharTok{*}\NormalTok{ eta,}
+      \AttributeTok{availability\_alpha =} \DecValTok{1} \SpecialCharTok{{-}}\NormalTok{ stress\_severity\_kappa }\SpecialCharTok{*}\NormalTok{ stress\_indicator,}
+      \AttributeTok{delivered\_compute =}\NormalTok{ availability\_alpha }\SpecialCharTok{*}\NormalTok{ potential\_compute,}
+
+      \AttributeTok{effective\_emissions\_tco2\_per\_mwh =}\NormalTok{ carbon\_exposure\_multiplier }\SpecialCharTok{*}\NormalTok{ emissions\_tco2\_per\_mwh,}
+
+      \AttributeTok{electricity\_component\_usd =}
+\NormalTok{        lmp\_usd\_per\_mwh }\SpecialCharTok{*}\NormalTok{ price\_multiplier }\SpecialCharTok{*}\NormalTok{ facility\_electricity\_mwh,}
+
+      \AttributeTok{carbon\_component\_usd =}
+\NormalTok{        lambda }\SpecialCharTok{*}\NormalTok{ effective\_emissions\_tco2\_per\_mwh }\SpecialCharTok{*}\NormalTok{ facility\_electricity\_mwh,}
+
+      \AttributeTok{reliability\_component\_usd =}
+\NormalTok{        nu }\SpecialCharTok{*}\NormalTok{ (}\DecValTok{1} \SpecialCharTok{{-}}\NormalTok{ availability\_alpha) }\SpecialCharTok{*}\NormalTok{ potential\_compute,}
+
+      \AttributeTok{crcc\_hourly\_numerator\_usd =}
+\NormalTok{        electricity\_component\_usd }\SpecialCharTok{+}
+\NormalTok{        carbon\_component\_usd }\SpecialCharTok{+}
+\NormalTok{        reliability\_component\_usd}
+\NormalTok{    )}
+
+\NormalTok{  out }\OtherTok{\textless{}{-}}\NormalTok{ tmp }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{summarise}\NormalTok{(}
+      \AttributeTok{option =} \FunctionTok{first}\NormalTok{(option),}
+      \AttributeTok{option\_label =} \FunctionTok{first}\NormalTok{(option\_label),}
+      \AttributeTok{CRCC =}
+        \FunctionTok{sum}\NormalTok{(crcc\_hourly\_numerator\_usd) }\SpecialCharTok{/} \FunctionTok{sum}\NormalTok{(delivered\_compute),}
+      \AttributeTok{electricity\_component\_crcc =}
+        \FunctionTok{sum}\NormalTok{(electricity\_component\_usd) }\SpecialCharTok{/} \FunctionTok{sum}\NormalTok{(delivered\_compute),}
+      \AttributeTok{carbon\_component\_crcc =}
+        \FunctionTok{sum}\NormalTok{(carbon\_component\_usd) }\SpecialCharTok{/} \FunctionTok{sum}\NormalTok{(delivered\_compute),}
+      \AttributeTok{reliability\_component\_crcc =}
+        \FunctionTok{sum}\NormalTok{(reliability\_component\_usd) }\SpecialCharTok{/} \FunctionTok{sum}\NormalTok{(delivered\_compute),}
+      \AttributeTok{delivered\_compute\_total =} \FunctionTok{sum}\NormalTok{(delivered\_compute),}
+      \AttributeTok{potential\_compute\_total =} \FunctionTok{sum}\NormalTok{(potential\_compute),}
+      \AttributeTok{stress\_hours =} \FunctionTok{sum}\NormalTok{(stress\_indicator),}
+      \AttributeTok{avg\_effective\_emissions\_tco2\_per\_mwh =} \FunctionTok{mean}\NormalTok{(effective\_emissions\_tco2\_per\_mwh)}
+\NormalTok{    )}
+
+  \FunctionTok{return}\NormalTok{(out)}
+\NormalTok{\}}
+
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\CommentTok{\# 8. Compute CRCC results for all options}
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\NormalTok{crcc\_results }\OtherTok{\textless{}{-}} \FunctionTok{bind\_rows}\NormalTok{(}\FunctionTok{lapply}\NormalTok{(}\FunctionTok{seq\_len}\NormalTok{(}\FunctionTok{nrow}\NormalTok{(option\_assumptions)), }\ControlFlowTok{function}\NormalTok{(i) \{}
+  \FunctionTok{compute\_crcc}\NormalTok{(}
+    \AttributeTok{df =}\NormalTok{ hourly,}
+    \AttributeTok{option\_name =}\NormalTok{ option\_assumptions}\SpecialCharTok{$}\NormalTok{option[i],}
+    \AttributeTok{option\_label =}\NormalTok{ option\_assumptions}\SpecialCharTok{$}\NormalTok{option\_label[i],}
+    \AttributeTok{price\_multiplier =}\NormalTok{ option\_assumptions}\SpecialCharTok{$}\NormalTok{price\_multiplier[i],}
+    \AttributeTok{carbon\_exposure\_multiplier =}\NormalTok{ option\_assumptions}\SpecialCharTok{$}\NormalTok{carbon\_exposure\_multiplier[i],}
+    \AttributeTok{stress\_severity\_kappa =}\NormalTok{ option\_assumptions}\SpecialCharTok{$}\NormalTok{stress\_severity\_kappa[i],}
+    \AttributeTok{it\_load\_mw =}\NormalTok{ it\_load\_mw,}
+    \AttributeTok{pue =}\NormalTok{ pue,}
+    \AttributeTok{eta =}\NormalTok{ eta,}
+    \AttributeTok{lambda =}\NormalTok{ lambda,}
+    \AttributeTok{nu =}\NormalTok{ nu}
+\NormalTok{  )}
+\NormalTok{\})) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\FunctionTok{across}\NormalTok{(}\FunctionTok{where}\NormalTok{(is.numeric), }\SpecialCharTok{\textasciitilde{}} \FunctionTok{round}\NormalTok{(.x, }\DecValTok{4}\NormalTok{)))}
+
+\FunctionTok{print}\NormalTok{(crcc\_results)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 2 x 10
+##   option         option_label  CRCC electricity_componen~1 carbon_component_crcc
+##   <chr>          <chr>        <dbl>                  <dbl>                 <dbl>
+## 1 Connect-and-M~ Connect-and~  97.1                   60.9                  25.0
+## 2 Associated_su~ Associated ~  85.4                   65.7                  17.5
+## # i abbreviated name: 1: electricity_component_crcc
+## # i 5 more variables: reliability_component_crcc <dbl>,
+## #   delivered_compute_total <dbl>, potential_compute_total <dbl>,
+## #   stress_hours <dbl>, avg_effective_emissions_tco2_per_mwh <dbl>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\CommentTok{\# 9. Compute BSM (Baseline Screening Metric)}
+\CommentTok{\# Formula:}
+\CommentTok{\# BSM(a,w) = [avg\_price * m\_(a,w) * sum E + lambda * g\_LB * sum E] / sum Q\_pot}
+\CommentTok{\#}
+\CommentTok{\# It intentionally ignores:}
+\CommentTok{\# {-} hourly price variation in the evaluator}
+\CommentTok{\# {-} option{-}specific decision{-}facing carbon exposure}
+\CommentTok{\# {-} stress{-}hour correction in the denominator}
+\CommentTok{\# {-} explicit reliability penalty}
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\NormalTok{bsm\_results }\OtherTok{\textless{}{-}}\NormalTok{ option\_assumptions }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{transmute}\NormalTok{(}
+\NormalTok{    option,}
+\NormalTok{    option\_label,}
+    \AttributeTok{BSM =}
+\NormalTok{      (}
+\NormalTok{        avg\_price }\SpecialCharTok{*}\NormalTok{ price\_multiplier }\SpecialCharTok{*}\NormalTok{ sum\_E }\SpecialCharTok{+}
+\NormalTok{          lambda }\SpecialCharTok{*}\NormalTok{ g\_lb }\SpecialCharTok{*}\NormalTok{ sum\_E}
+\NormalTok{      ) }\SpecialCharTok{/}\NormalTok{ sum\_Q\_pot,}
+    \AttributeTok{avg\_price\_usd\_per\_mwh =}\NormalTok{ avg\_price,}
+    \AttributeTok{location\_based\_emissions\_tco2\_per\_mwh =}\NormalTok{ g\_lb}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\FunctionTok{across}\NormalTok{(}\FunctionTok{where}\NormalTok{(is.numeric), }\SpecialCharTok{\textasciitilde{}} \FunctionTok{round}\NormalTok{(.x, }\DecValTok{4}\NormalTok{)))}
+
+\FunctionTok{print}\NormalTok{(bsm\_results)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 2 x 5
+##   option         option_label   BSM avg_price_usd_per_mwh location_based_emiss~1
+##   <chr>          <chr>        <dbl>                 <dbl>                  <dbl>
+## 1 Connect-and-M~ Connect-and~  86.5                  50.7                  0.268
+## 2 Associated_su~ Associated ~  91.4                  50.7                  0.268
+## # i abbreviated name: 1: location_based_emissions_tco2_per_mwh
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\CommentTok{\# 10. Merge evaluator results}
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\NormalTok{comparison\_table }\OtherTok{\textless{}{-}}\NormalTok{ crcc\_results }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(option, option\_label, CRCC,}
+\NormalTok{         electricity\_component\_crcc,}
+\NormalTok{         carbon\_component\_crcc,}
+\NormalTok{         reliability\_component\_crcc,}
+\NormalTok{         delivered\_compute\_total,}
+\NormalTok{         potential\_compute\_total,}
+\NormalTok{         stress\_hours) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{left\_join}\NormalTok{(bsm\_results, }\AttributeTok{by =} \FunctionTok{c}\NormalTok{(}\StringTok{"option"}\NormalTok{, }\StringTok{"option\_label"}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{BSM\_minus\_CRCC =} \FunctionTok{round}\NormalTok{(BSM }\SpecialCharTok{{-}}\NormalTok{ CRCC, }\DecValTok{4}\NormalTok{)}
+\NormalTok{  )}
+
+\FunctionTok{print}\NormalTok{(comparison\_table)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 2 x 13
+##   option         option_label  CRCC electricity_componen~1 carbon_component_crcc
+##   <chr>          <chr>        <dbl>                  <dbl>                 <dbl>
+## 1 Connect-and-M~ Connect-and~  97.1                   60.9                  25.0
+## 2 Associated_su~ Associated ~  85.4                   65.7                  17.5
+## # i abbreviated name: 1: electricity_component_crcc
+## # i 8 more variables: reliability_component_crcc <dbl>,
+## #   delivered_compute_total <dbl>, potential_compute_total <dbl>,
+## #   stress_hours <dbl>, BSM <dbl>, avg_price_usd_per_mwh <dbl>,
+## #   location_based_emissions_tco2_per_mwh <dbl>, BSM_minus_CRCC <dbl>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\CommentTok{\# 11. Design{-}gap calculations}
+\CommentTok{\# Reduced exposure minus Connect{-}and{-}Manage}
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\NormalTok{cm\_bsm }\OtherTok{\textless{}{-}}\NormalTok{ comparison\_table }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(option }\SpecialCharTok{==} \StringTok{"Connect{-}and{-}Manage"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{pull}\NormalTok{(BSM)}
+
+\NormalTok{re\_bsm }\OtherTok{\textless{}{-}}\NormalTok{ comparison\_table }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(option }\SpecialCharTok{==} \StringTok{"Associated\_supply\_reduced\_exposure"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{pull}\NormalTok{(BSM)}
+
+\NormalTok{cm\_crcc }\OtherTok{\textless{}{-}}\NormalTok{ comparison\_table }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(option }\SpecialCharTok{==} \StringTok{"Connect{-}and{-}Manage"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{pull}\NormalTok{(CRCC)}
+
+\NormalTok{re\_crcc }\OtherTok{\textless{}{-}}\NormalTok{ comparison\_table }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(option }\SpecialCharTok{==} \StringTok{"Associated\_supply\_reduced\_exposure"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{pull}\NormalTok{(CRCC)}
+
+\NormalTok{design\_gap }\OtherTok{\textless{}{-}} \FunctionTok{tibble}\NormalTok{(}
+  \AttributeTok{delta\_BSM =} \FunctionTok{round}\NormalTok{(re\_bsm }\SpecialCharTok{{-}}\NormalTok{ cm\_bsm, }\DecValTok{4}\NormalTok{),}
+  \AttributeTok{delta\_CRCC =} \FunctionTok{round}\NormalTok{(re\_crcc }\SpecialCharTok{{-}}\NormalTok{ cm\_crcc, }\DecValTok{4}\NormalTok{),}
+  \AttributeTok{ranking\_under\_BSM =} \FunctionTok{ifelse}\NormalTok{(re\_bsm }\SpecialCharTok{\textless{}}\NormalTok{ cm\_bsm,}
+                             \StringTok{"Reduced exposure preferred"}\NormalTok{,}
+                             \StringTok{"Connect{-}and{-}Manage preferred"}\NormalTok{),}
+  \AttributeTok{ranking\_under\_CRCC =} \FunctionTok{ifelse}\NormalTok{(re\_crcc }\SpecialCharTok{\textless{}}\NormalTok{ cm\_crcc,}
+                              \StringTok{"Reduced exposure preferred"}\NormalTok{,}
+                              \StringTok{"Connect{-}and{-}Manage preferred"}\NormalTok{)}
+\NormalTok{)}
+
+\FunctionTok{print}\NormalTok{(design\_gap)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 4
+##   delta_BSM delta_CRCC ranking_under_BSM            ranking_under_CRCC        
+##       <dbl>      <dbl> <chr>                        <chr>                     
+## 1      4.87      -11.6 Connect-and-Manage preferred Reduced exposure preferred
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\CommentTok{\# 12. Export result tables}
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\FunctionTok{write\_csv}\NormalTok{(crcc\_results, }\StringTok{"figure5\_2\_crcc\_results.csv"}\NormalTok{)}
+\FunctionTok{write\_csv}\NormalTok{(bsm\_results, }\StringTok{"figure5\_2\_bsm\_results.csv"}\NormalTok{)}
+\FunctionTok{write\_csv}\NormalTok{(comparison\_table, }\StringTok{"figure5\_2\_comparison\_table.csv"}\NormalTok{)}
+\FunctionTok{write\_csv}\NormalTok{(design\_gap, }\StringTok{"figure5\_2\_design\_gap.csv"}\NormalTok{)}
+
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\CommentTok{\# 13. Build plotting dataset}
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\NormalTok{plot\_data }\OtherTok{\textless{}{-}}\NormalTok{ comparison\_table }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(option\_label, BSM, CRCC) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{pivot\_longer}\NormalTok{(}
+    \AttributeTok{cols =} \FunctionTok{c}\NormalTok{(BSM, CRCC),}
+    \AttributeTok{names\_to =} \StringTok{"metric"}\NormalTok{,}
+    \AttributeTok{values\_to =} \StringTok{"value"}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{metric =} \FunctionTok{recode}\NormalTok{(}
+\NormalTok{      metric,}
+      \StringTok{"BSM"} \OtherTok{=} \StringTok{"Baseline screening metric"}\NormalTok{,}
+      \StringTok{"CRCC"} \OtherTok{=} \StringTok{"CRCC"}
+\NormalTok{    ),}
+    \AttributeTok{option\_label =} \FunctionTok{factor}\NormalTok{(}
+\NormalTok{      option\_label,}
+      \AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\StringTok{"Connect{-}and{-}Manage"}\NormalTok{, }\StringTok{"Associated supply / reduced exposure"}\NormalTok{)}
+\NormalTok{    ),}
+    \AttributeTok{metric =} \FunctionTok{factor}\NormalTok{(}
+\NormalTok{      metric,}
+      \AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\StringTok{"Baseline screening metric"}\NormalTok{, }\StringTok{"CRCC"}\NormalTok{)}
+\NormalTok{    )}
+\NormalTok{  )}
+
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\CommentTok{\# 14. Draw Figure 5.2}
+\CommentTok{\# Grouped bar chart with value labels}
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\NormalTok{fig\_5\_2 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(plot\_data,}
+                  \FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ metric, }\AttributeTok{y =}\NormalTok{ value, }\AttributeTok{fill =}\NormalTok{ option\_label)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_col}\NormalTok{(}\AttributeTok{position =} \FunctionTok{position\_dodge}\NormalTok{(}\AttributeTok{width =} \FloatTok{0.75}\NormalTok{), }\AttributeTok{width =} \FloatTok{0.65}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_text}\NormalTok{(}
+    \FunctionTok{aes}\NormalTok{(}\AttributeTok{label =} \FunctionTok{round}\NormalTok{(value, }\DecValTok{1}\NormalTok{)),}
+    \AttributeTok{position =} \FunctionTok{position\_dodge}\NormalTok{(}\AttributeTok{width =} \FloatTok{0.75}\NormalTok{),}
+    \AttributeTok{vjust =} \SpecialCharTok{{-}}\FloatTok{0.45}\NormalTok{,}
+    \AttributeTok{size =} \DecValTok{4}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{scale\_y\_continuous}\NormalTok{(}
+    \AttributeTok{labels =} \FunctionTok{number\_format}\NormalTok{(}\AttributeTok{accuracy =} \FloatTok{0.1}\NormalTok{),}
+    \AttributeTok{expand =} \FunctionTok{expansion}\NormalTok{(}\AttributeTok{mult =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\FloatTok{0.10}\NormalTok{))}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"Figure 5.2. Baseline screening metric versus CRCC"}\NormalTok{,}
+    \AttributeTok{subtitle =} \StringTok{"Decision contrast for the two stylized designs in the Virginia / PJM / DOM case"}\NormalTok{,}
+    \AttributeTok{x =} \ConstantTok{NULL}\NormalTok{,}
+    \AttributeTok{y =} \StringTok{"USD per compute (lower is better)"}\NormalTok{,}
+    \AttributeTok{fill =} \ConstantTok{NULL}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{(}\AttributeTok{base\_size =} \DecValTok{13}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}
+    \AttributeTok{plot.title =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{face =} \StringTok{"bold"}\NormalTok{),}
+    \AttributeTok{plot.subtitle =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{11}\NormalTok{),}
+    \AttributeTok{legend.position =} \StringTok{"top"}\NormalTok{,}
+    \AttributeTok{panel.grid.minor =} \FunctionTok{element\_blank}\NormalTok{()}
+\NormalTok{  )}
+
+\FunctionTok{print}\NormalTok{(fig\_5\_2)}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{section-5-case-study_files/figure-latex/unnamed-chunk-5-1.pdf}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\CommentTok{\# 15. Save Figure 5.2}
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\FunctionTok{ggsave}\NormalTok{(}
+  \AttributeTok{filename =} \StringTok{"Figure\_5\_2\_BSM\_vs\_CRCC.png"}\NormalTok{,}
+  \AttributeTok{plot =}\NormalTok{ fig\_5\_2,}
+  \AttributeTok{width =} \FloatTok{8.5}\NormalTok{,}
+  \AttributeTok{height =} \FloatTok{5.5}\NormalTok{,}
+  \AttributeTok{dpi =} \DecValTok{300}
+\NormalTok{)}
+
+\FunctionTok{ggsave}\NormalTok{(}
+  \AttributeTok{filename =} \StringTok{"Figure\_5\_2\_BSM\_vs\_CRCC.pdf"}\NormalTok{,}
+  \AttributeTok{plot =}\NormalTok{ fig\_5\_2,}
+  \AttributeTok{width =} \FloatTok{8.5}\NormalTok{,}
+  \AttributeTok{height =} \FloatTok{5.5}
+\NormalTok{)}
+
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\CommentTok{\# 16. Optional console summary}
+\CommentTok{\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{==============================}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## ==============================
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Average price used in BSM:"}\NormalTok{, }\FunctionTok{round}\NormalTok{(avg\_price, }\DecValTok{4}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Average price used in BSM: 50.6929
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Location{-}based emissions factor used in BSM:"}\NormalTok{, }\FunctionTok{round}\NormalTok{(g\_lb, }\DecValTok{4}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Location-based emissions factor used in BSM: 0.2677
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"==============================}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## ==============================
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(comparison\_table)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 2 x 13
+##   option         option_label  CRCC electricity_componen~1 carbon_component_crcc
+##   <chr>          <chr>        <dbl>                  <dbl>                 <dbl>
+## 1 Connect-and-M~ Connect-and~  97.1                   60.9                  25.0
+## 2 Associated_su~ Associated ~  85.4                   65.7                  17.5
+## # i abbreviated name: 1: electricity_component_crcc
+## # i 8 more variables: reliability_component_crcc <dbl>,
+## #   delivered_compute_total <dbl>, potential_compute_total <dbl>,
+## #   stress_hours <dbl>, BSM <dbl>, avg_price_usd_per_mwh <dbl>,
+## #   location_based_emissions_tco2_per_mwh <dbl>, BSM_minus_CRCC <dbl>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(design\_gap)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 4
+##   delta_BSM delta_CRCC ranking_under_BSM            ranking_under_CRCC        
+##       <dbl>      <dbl> <chr>                        <chr>                     
+## 1      4.87      -11.6 Connect-and-Manage preferred Reduced exposure preferred
+\end{verbatim}
+
+\end{document}

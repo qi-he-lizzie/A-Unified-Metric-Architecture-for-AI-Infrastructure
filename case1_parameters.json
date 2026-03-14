@@ -1,0 +1,22 @@
+{
+  "case_name": "Virginia_PJM_DOM_Case1",
+  "benchmark_year": 2025,
+  "planning_parameters": {
+    "it_load_mw": 100.0,
+    "pue": 1.2,
+    "eta_compute_per_mwh_it": 1.0,
+    "carbon_shadow_price_usd_per_tco2": 80.0,
+    "reliability_valuation_usd_per_compute_unit": 10000.0,
+    "location_based_emissions_baseline_tco2_per_mwh": 0.2677
+  },
+  "options": {
+    "Connect-and-Manage": {
+      "price_multiplier": 1.0,
+      "stress_severity_kappa": 0.15
+    },
+    "Associated_supply_reduced_exposure": {
+      "price_multiplier": 1.08,
+      "stress_severity_kappa": 0.03
+    }
+  }
+}
